@@ -13,6 +13,8 @@ img{
     justify-content: space-between;
     transition: all 0.5s;
     word-wrap: break-word;
+    user-select: none;
+
 }
 .list-group-item p{
     width: 55%;
@@ -59,4 +61,7 @@ img{
 }
 .hidden{
     display: none;
+}
+.completed{
+    opacity: 0.5;
 }

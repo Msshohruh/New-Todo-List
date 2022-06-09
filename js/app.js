@@ -4,7 +4,7 @@ const listGroupTodo = document.getElementById('list-group-todo')
 const messageCreate = document.getElementById('message')
 
 const LIST = 'list'
-const todos = JSON.parse(localStorage.getItem(LIST)) ? JSON.parse(localStorage.getItem(LIST)) : []
+let todos = JSON.parse(localStorage.getItem(LIST)) ? JSON.parse(localStorage.getItem(LIST)) : []
 
 // setTodos
 function setTodos() {
@@ -27,7 +27,8 @@ function showTodos() {
     listGroupTodo.innerHTML = ''
     todos.forEach((todo, index) => {
         listGroupTodo.innerHTML += `
-            <li class="list-group-item">
+            <li ondblclick="setCompleted(${index})" 
+            class="list-group-item ${todo.completed == true ? 'completed' : ''}">
                 <p class="text-break">${todo.text}</p>
                 <div class="todo-icons">
                     <span class="opacity-50 me-2">${todo.time}</span>
@@ -79,7 +80,7 @@ formEdit.addEventListener('submit', (e) => {
     const newText = formEdit['input-edit'].value.trim()
     formEdit['input-edit'].value = ''
     if (newText.length){
-        // todos[id] = newText /*-- method without splice()*/
+        // todos[id] = {'text': newText,'time': date,'completed': false} /*-- method without splice()*/
         todos.splice(id, 1, {
             'text': newText,
             'time': date,
@@ -108,3 +109,17 @@ function modalOn(){
 document.getElementById('modal-close').addEventListener('click', () =>{
     modalOff()
 })
+
+// 
+function setCompleted(id){
+    const mapedTodo = todos.map((todo, i) => {
+        if (id == i){
+            return {...todo, completed: todo.completed == true ? false : true}
+        } else {
+            return {...todo}
+        }
+    })
+    todos = mapedTodo
+    setTodos()
+    showTodos()
+}
